@@ -1,0 +1,35 @@
+jamesdanielmarrsritchey: Write a php function which compresses a file.
+
+GitHub Copilot: ```php
+function compressFile($sourceFile, $destinationFile) {
+    // Check if the source file exists
+    if (!file_exists($sourceFile)) {
+        return false;
+    }
+
+    // Open the source file for reading
+    $fpIn = fopen($sourceFile, 'rb');
+    if ($fpIn === false) {
+        return false;
+    }
+
+    // Open the destination file for writing
+    $fpOut = gzopen($destinationFile, 'wb9');
+    if ($fpOut === false) {
+        fclose($fpIn);
+        return false;
+    }
+
+    // Read from the source file and write the compressed data to the destination file
+    while (!feof($fpIn)) {
+        gzwrite($fpOut, fread($fpIn, 1024 * 512)); // Read in chunks of 512KB
+    }
+
+    // Close the files
+    fclose($fpIn);
+    gzclose($fpOut);
+
+    return true;
+}
+```
+This function takes two parameters: the path to the source file you want to compress and the destination path for the compressed file. It uses PHP's `gzopen`, `gzwrite`, and `gzclose` functions to compress the file. The function returns `true` on success and `false` on failure.
